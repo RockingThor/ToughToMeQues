@@ -7,7 +7,7 @@ const UpdateTodo= ()=>{
     const {id}= useParams();
     const [title, setTitle]= useState("");
     const [description, setDescription]= useState("");
-    const [isDone, setIsDone]= useState(false);
+    const [completed, setCompleted]= useState(false);
     const navigate= useNavigate();
 
     useEffect(()=>{
@@ -20,7 +20,7 @@ const UpdateTodo= ()=>{
                 const data= await response.json();
                 setTitle(data.title);
                 setDescription(data.description);
-                setIsDone(data.isDone);
+                setCompleted(data.completed);
             }catch(err){
                 console.error(err);
             }
@@ -33,7 +33,7 @@ const UpdateTodo= ()=>{
         const newTodo={
             title: title,
             description: description,
-            isDone: isDone
+            completed: completed
         }
         try{
             const response= await fetch(`http://localhost:3000/todos/${id}`, {
@@ -87,11 +87,11 @@ const UpdateTodo= ()=>{
                     <input
                     className="form-check-input"
                     type="checkbox"
-                    id="isDone"
-                    checked= {isDone}
-                    onChange={(e)=> setIsDone(e.target.checked)}
+                    id="completed"
+                    checked= {completed}
+                    onChange={(e)=> setCompleted(e.target.checked)}
                     />
-                    <label htmlFor="isDone" className="form-check-label">
+                    <label htmlFor="completed" className="form-check-label">
                         Completed
                     </label>
                 </div>

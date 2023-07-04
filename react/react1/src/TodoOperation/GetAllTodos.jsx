@@ -25,18 +25,18 @@ const TodoList= ()=>{
     }, []);
 
 
-    const delteTodo= async (id,e)=>{
+    const delteTodo= async (_id,e)=>{
       e.preventDefault();
       const confirmDelete= window.confirm("Do you really want to delete the selected todo?");
       if(confirmDelete){
         try{
-          const response= await fetch(`http://localhost:3000/todos/${id}`,{
+          const response= await fetch(`http://localhost:3000/todos/${_id}`,{
                 method: "DELETE"
             });
             if(!response.ok){
                 throw new Error("Failed to add todo");
           }
-          setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+          setTodos(prevTodos => prevTodos.filter(todo => todo._id !== _id));
         }catch(err){
           console.error(err);
         }
@@ -61,16 +61,16 @@ const TodoList= ()=>{
             </thead>
             <tbody>
               {todos.map((todo) => (
-                <tr key={todo.id}>
-                  <td>{todo.id}</td>
+                <tr key={todo._id}>
+                  <td>{todo._id}</td>
                   <td>{todo.title}</td>
                   <td>{todo.description}</td>
-                  <td>{todo.isDone ? "Yes" : "No"}</td>
+                  <td>{todo.completed ? "Yes" : "No"}</td>
                   <td>
-                  <Link to={`/update/${todo.id}`} className="btn btn-warning">Update</Link>
+                  <Link to={`/update/${todo._id}`} className="btn btn-warning">Update</Link>
                   </td>
                   <td>
-                  <button onClick={(e)=>delteTodo(todo.id, e)} className="btn btn-danger">Delete</button>
+                  <button onClick={(e)=>delteTodo(todo._id, e)} className="btn btn-danger">Delete</button>
                   </td>
                 </tr>
               ))}

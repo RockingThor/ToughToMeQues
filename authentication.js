@@ -47,6 +47,33 @@ const authenticateAdminJWT =(req,res,next)=>{
   }
 }
 
+const authenticateUserJWT =(req,res,next)=>{
+  const authHeader=req.headers.authorization;
+  if(authHeader){
+    const token=authHeader.split(' ')[1];
+    console.log(token);
+    jwt.verify(token, secretKey, (err,user)=>{
+        console.log("Was here");
+      if(err){
+        return res.sendStatus(403);
+      }
+      req.user=user;
+      let authenticated=false;
+      for(let i=0;i<USERS.length;i++){
+        if(USERS[i].username===user.username){
+            authenticated=true;
+            next();
+        }
+      }
+      if(!authenticated){
+        return res.sendStatus(403);
+      }
+    });
+  }else{
+    return res.sendStatus(403);
+  }
+}
+
 app.post('/admin/signup', async (req,res)=>{
     let username=req.body.username;
     let password= req.body.password;
